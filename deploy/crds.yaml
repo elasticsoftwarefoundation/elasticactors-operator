@@ -1,0 +1,59 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: actorsystems.elasticactors.io
+  namespace: elasticactors
+spec:
+  group: elasticactors.io
+  scope: Namespaced
+  version: v1
+  names:
+    plural: actorsystems
+    singular: actorsystem
+    kind: ActorSystem
+    shortNames:
+      - as
+  versions:
+    - name: v1
+      served: true
+      storage: true
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: persistentactors.elasticactors.io
+  namespace: elasticactors
+spec:
+  group: elasticactors.io
+  scope: Namespaced
+  version: v1
+  names:
+    plural: persistentactors
+    singular: persistentactor
+    kind: PersistentActor
+    shortNames:
+      - pact
+  versions:
+    - name: v1
+      served: true
+      storage: true
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: serviceactors.elasticactors.io
+  namespace: elasticactors
+spec:
+  group: elasticactors.io
+  scope: Namespaced
+  version: v1
+  names:
+    plural: serviceactors
+    singular: serviceactor
+    kind: ServiceActor
+    shortNames:
+      - sact
+  versions:
+    - name: v1
+      served: true
+      storage: true
