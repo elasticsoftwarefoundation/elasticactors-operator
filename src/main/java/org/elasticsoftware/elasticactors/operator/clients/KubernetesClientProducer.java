@@ -1,6 +1,5 @@
 package org.elasticsoftware.elasticactors.operator.clients;
 
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -19,7 +18,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import org.elasticsoftware.elasticactors.operator.FatalErrorHandler;
 import org.elasticsoftware.elasticactors.operator.customresources.ActorSystem;
 import org.elasticsoftware.elasticactors.operator.customresources.ActorSystemList;
-import org.elasticsoftware.elasticactors.operator.customresources.DoneableActorSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +32,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.net.Proxy;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static okhttp3.ConnectionSpec.CLEARTEXT;
@@ -71,8 +68,9 @@ public class KubernetesClientProducer {
 
     @Produces
     @Singleton
-    MixedOperation<ActorSystem, ActorSystemList, DoneableActorSystem, Resource<ActorSystem, DoneableActorSystem>>
+    MixedOperation<ActorSystem, ActorSystemList, Resource<ActorSystem>>
     makeActorSystemCustomResourceClient(DefaultKubernetesClient defaultClient, @Named(OPERATOR_NAMESPACE) String operatorNamespace) {
+        /*
         Optional<CustomResourceDefinition> crd = defaultClient
                 .inNamespace(operatorNamespace)
                 .customResourceDefinitions().list().getItems().stream()
@@ -83,9 +81,9 @@ public class KubernetesClientProducer {
                     "Custom resource definition " + CRD_NAME + " not found. Please create the CRD using the provided YAML.");
             fatalErrorHandler.systemExit(-1);
         }
+         */
         KubernetesDeserializer.registerCustomKind(CRD_GROUP + "/" + CRD_VERSION, CR_KIND, ActorSystem.class);
-        return defaultClient
-                .customResources(crd.get(), ActorSystem.class, ActorSystemList.class, DoneableActorSystem.class);
+        return defaultClient.customResources(ActorSystem.class, ActorSystemList.class);
     }
 
     @Produces

@@ -37,9 +37,11 @@ public class Cache<T extends HasMetadata, L extends KubernetesResourceList<T>> {
         return map.get(uid);
     }
 
+    /*
     public Observable<CacheEvent> listThenWatch(FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> op) {
         return listThenWatch(new ListerWatcher<>(op));
     }
+    */
 
     public Observable<CacheEvent> listThenWatch(ListerWatcher<T, L> op) {
         return new Observable<CacheEvent>() {

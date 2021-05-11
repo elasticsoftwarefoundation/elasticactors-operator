@@ -2,9 +2,9 @@ package org.elasticsoftware.elasticactors.operator.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import org.elasticsoftware.elasticactors.operator.FatalErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,6 @@ class ListThenWatchOperation {
                                                                                   Consumer<Exception> onErrorCallback) {
 
         // list
-
         op.list()
                 .getItems()
                 .forEach(resource -> {
@@ -39,7 +38,6 @@ class ListThenWatchOperation {
                 );
 
         // watch
-
         return op.watch(new Watcher<T>() {
             @Override
             public void eventReceived(Action action, T resource) {
@@ -71,7 +69,7 @@ class ListThenWatchOperation {
             }
 
             @Override
-            public void onClose(KubernetesClientException cause) {
+            public void onClose(WatcherException cause) {
                 if (cause != null) { // null means normal close, i.e. Watch.close() was called.
                     try {
                         // We call the onErrorCallback to allow for cleanup, but after that we terminate the JVM

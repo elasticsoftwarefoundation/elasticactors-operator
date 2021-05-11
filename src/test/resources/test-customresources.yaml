@@ -10,5 +10,5 @@ metadata:
   namespace: app
 spec:
   shards: 32
-  nodes: 8
+  nodes: 16
   type: RABBITMQ_CASSANDRA
